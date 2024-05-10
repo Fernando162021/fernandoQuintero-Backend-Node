@@ -14,6 +14,7 @@ app.use(express.urlencoded({extended:false}));
 
 app.use("/api/users", require("./routes/userRoutes"))
 app.use("/api/tournaments", require("./routes/tournamentRoutes"))
+app.use("/api/athletes", require("./routes/athleteRoutes"))
 
 app.use(errorHandler);
 
