@@ -34,8 +34,7 @@ const login = asyncHandler(async (req, res) => {
         res.status(200).json({
             _id: user.id,
             name: user.name,
-            email: user.email,
-            token: generarToken(user.id)
+            email: user.email
         })
     }
     else
