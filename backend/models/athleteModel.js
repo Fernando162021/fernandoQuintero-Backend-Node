@@ -1,6 +1,11 @@
 const mongoose = require("mongoose")
 
 const athleteSchema = mongoose.Schema({
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
+    },
     tournament: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
