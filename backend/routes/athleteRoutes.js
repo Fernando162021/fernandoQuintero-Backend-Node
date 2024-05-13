@@ -8,8 +8,8 @@ const {updateAthlete} = require('../controllers/athleteController');
 const {deleteAthlete} = require('../controllers/athleteController');
 
 router.get('/', getAthletes);
-router.post('/', registerAthlete);
-router.put('/:id', updateAthlete);
-router.delete('/:id', deleteAthlete);
+router.post('/', protect, registerAthlete);
+router.put('/:id', protect, updateAthlete);
+router.delete('/:id', protect, deleteAthlete);
 
 module.exports = router;
