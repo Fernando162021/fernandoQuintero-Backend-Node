@@ -8,8 +8,8 @@ const {updateTournament} = require('../controllers/tournamentController');
 const {deleteTournament} = require('../controllers/tournamentController');
 
 router.get('/', getTournaments);
-router.post('/', protect, createTournament);
-router.put('/:id', protect, updateTournament);
-router.delete('/:id', protect, deleteTournament);
+router.post('/', createTournament);
+router.put('/:id', updateTournament);
+router.delete('/:id', deleteTournament);
 
 module.exports = router;
