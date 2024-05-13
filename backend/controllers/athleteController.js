@@ -14,6 +14,7 @@ const registerAthlete = asyncHandler(async (req, res) => {
         const tournament = await Tournament.findById(tournamentId);
     
         if (!tournament) {
+            res.status(404);
             throw new Error("No se encontró el torneo");
         }
     
@@ -32,7 +33,10 @@ const registerAthlete = asyncHandler(async (req, res) => {
             athlete: athlete
         });
     } catch (error) {
-        next(error);
+        res.status(500).json({
+            message: "Error al registrar el atleta",
+            error: error.message
+        });
     }    
 });
 
