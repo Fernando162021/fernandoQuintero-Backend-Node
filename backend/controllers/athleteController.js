@@ -10,14 +10,19 @@ const getAthletes = asyncHandler( async (req, res) => {
 const registerAthlete = asyncHandler(async (req, res) => {
     try {
         const { athleteName, country, city, bornDate, gender, weightDivision, tournamentId } = req.body;
-    
+        
         const tournament = await Tournament.findById(tournamentId);
-    
+        
         if (!tournament) {
             res.status(404);
             throw new Error("No se encontró el torneo");
         }
-    
+        
+        if (req.user._id.toString() !== tournament.user.toString()) {
+            res.status(403);
+            throw new Error("No tiene permiso para registrar un atleta en este torneo");
+        }
+        
         const athlete = await Athlete.create({
             athleteName,
             country,
@@ -27,7 +32,7 @@ const registerAthlete = asyncHandler(async (req, res) => {
             weightDivision,
             tournament: tournament._id
         });
-    
+        
         res.status(201).json({
             message: "Atleta registrado exitosamente",
             athlete: athlete
@@ -39,7 +44,6 @@ const registerAthlete = asyncHandler(async (req, res) => {
         });
     }    
 });
-
 
 const updateAthlete = asyncHandler( async (req, res) => {
     const athletes = await Athlete.findById(req.params.id);
