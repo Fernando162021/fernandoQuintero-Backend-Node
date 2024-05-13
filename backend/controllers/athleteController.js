@@ -65,14 +65,12 @@ const updateAthlete = asyncHandler(async (req, res) => {
 
         const updatedAthlete = await Athlete.findByIdAndUpdate(req.params.id, req.body, { new: true });
         
-        res.status(200).json(updatedAthlete);
+        res.status(200).json({ message: "Atleta actualizado exitosamente", athlete: updatedAthlete });
     } catch (error) {
-        res.status(500).json({
-            message: "Error al actualizar el atleta",
-            error: error.message
-        });
+        res.status(500).json({ message: "Error al actualizar el atleta", error: error.message });
     }
 });
+
 
 const deleteAthlete = asyncHandler(async (req, res) => {
     try {
