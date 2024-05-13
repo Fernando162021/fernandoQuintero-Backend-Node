@@ -8,27 +8,15 @@ const getAthletes = asyncHandler( async (req, res) => {
 });
 
 const registerAthlete = asyncHandler(async (req, res) => {
-
-    const requiredFields = ['athleteName', 'country', 'city', 'bornDate', 'gender'];
-
-    const missingFields = requiredFields.filter(field => !req.body[field]);
-
-    if (missingFields.length > 0) {
-        res.status(400);
-        throw new Error(`Faltan datos: ${missingFields.join(', ')}`);
-    }
-
     try {
-
         const { athleteName, country, city, bornDate, gender, weightDivision, tournamentId } = req.body;
-
+    
         const tournament = await Tournament.findById(tournamentId);
-
+    
         if (!tournament) {
-            res.status(404);
             throw new Error("No se encontró el torneo");
         }
-
+    
         const athlete = await Athlete.create({
             athleteName,
             country,
@@ -38,17 +26,14 @@ const registerAthlete = asyncHandler(async (req, res) => {
             weightDivision,
             tournament: tournament._id
         });
-
+    
         res.status(201).json({
             message: "Atleta registrado exitosamente",
             athlete: athlete
         });
     } catch (error) {
-        res.status(500).json({
-            message: "Error al registrar el atleta",
-            error: error.message
-        });
-    }
+        next(error);
+    }    
 });
 
 
