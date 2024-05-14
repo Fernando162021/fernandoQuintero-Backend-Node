@@ -24,6 +24,12 @@ const updateTournament = asyncHandler( async (req, res) => {
         res.status(404);
         throw new Error('No se encontró el torneo');
     }
+
+    if (tournament.user.toString() !== req.user._id.toString()) {
+        res.status(403);
+        throw new Error('No tienes permiso para realizar esta acción');
+    }
+
     const tournamentsUpdated = await Tournament.findByIdAndUpdate(req.params.id, req.body, {new: true});
     res.status(200).json(tournamentsUpdated);
 });
