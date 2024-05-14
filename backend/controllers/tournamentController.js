@@ -19,15 +19,10 @@ const createTournament = asyncHandler( async (req, res) => {
 });
 
 const updateTournament = asyncHandler( async (req, res) => {
-    const tournaments = await Tournament.findById(req.params.id);
-    if(!tournaments){
+    const tournament = await Tournament.findById(req.params.id);
+    if(!tournament){
         res.status(404);
         throw new Error('No se encontró el torneo');
-    }
-
-    if (tournament.user.toString() !== req.user._id.toString()) {
-        res.status(403);
-        throw new Error('No tienes permiso para realizar esta acción');
     }
 
     const tournamentsUpdated = await Tournament.findByIdAndUpdate(req.params.id, req.body, {new: true});
@@ -35,12 +30,13 @@ const updateTournament = asyncHandler( async (req, res) => {
 });
 
 const deleteTournament = asyncHandler( async (req, res) => {
-    const tournamentsDeleted = await Tournament.findById(req.params.id);
-    if(!tournamentsDeleted){
+    const tournament = await Tournament.findById(req.params.id);
+    if(!tournament){
         res.status(404);
         throw new Error('No se encontró el torneo');
     }
-    await Tournament.deleteOne(tournamentsDeleted);
+
+    await Tournament.deleteOne(tournament);
     res.status(200).json({message: `Se eliminó el torneo: ${req.params.id}`});
 });
 module.exports = {
