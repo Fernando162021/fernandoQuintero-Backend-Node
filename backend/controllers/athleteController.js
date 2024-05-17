@@ -7,6 +7,28 @@ const getAthletes = asyncHandler( async (req, res) => {
     res.status(200).json(athletes);
 });
 
+const getAthleteById = async (req, res) => {
+    try {
+        const athleteId = req.params.id;
+        const athlete = await Athlete.findById(athleteId);
+        
+        if (!athlete) {
+            return res.status(404).json({ message: 'Athlete not found' });
+        }
+
+        res.status(200).json(athlete);
+    } catch (error) {
+        console.error('Error fetching athlete by ID:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const getAthletesByTournamentId = asyncHandler(async (req, res) => {
+    const tournamentId = req.params.tournamentId;
+    const athletes = await Athlete.find({ tournament: tournamentId });
+    res.status(200).json(athletes);
+});
+
 const registerAthlete = asyncHandler(async (req, res) => {
     try {
         const { athleteName, country, city, bornDate, gender, weightDivision, tournamentId } = req.body;
@@ -99,7 +121,9 @@ const deleteAthlete = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-    getAthletes, 
+    getAthletes,
+    getAthleteById,
+    getAthletesByTournamentId, 
     registerAthlete, 
     updateAthlete, 
     deleteAthlete
